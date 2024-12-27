@@ -5,9 +5,12 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "sourceMap": true, // 开启 Source Maps
     "baseUrl": "./src",  // 设置 baseUrl 为 src 目录
     "paths": {
-      "@/*": ["*"]  // 使用 @/ 来表示 src 目录下的文件
+      "@/*": ["*"],  // 使用 @/ 来表示 src 目录下的文件
+      "@tauri-apps/api/*": ["node_modules/@tauri-apps/api/dist/*"]
+
     },
     /* Bundler mode */
     "moduleResolution": "bundler",

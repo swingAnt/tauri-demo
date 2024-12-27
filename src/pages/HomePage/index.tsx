@@ -1,51 +1,115 @@
-import { useState } from "react";
-import reactLogo from "../../assets/react.svg";
+import React, { useState } from 'react';
+import { Button, Input } from 'antd';
 import { invoke } from "@tauri-apps/api/core";
+import { createWebviewWindow } from "@/utils";
+import { Switch } from 'antd';
 import "./index.css";
+import { UploadOutlined } from '@ant-design/icons';
+import type { UploadProps } from 'antd';
+import {  message, Upload,Select } from 'antd';
 
-function HomePage() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+const App: React.FC = () => {
+  const [query, setQuery] = useState('');
+  const [response, setResponse] = useState('');
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
 
+  const handleAIQuery = async () => {
+    try {
+      const aiResponse = await invoke('ask_ai', { query });
+      setResponse(aiResponse as string);
+      createWebviewWindow(`/result?query=${query}`, 'result-window');
+
+    } catch (error) {
+      setResponse('Error: Unable to get a response.');
+    }
+  };
+
+  const props: UploadProps = {
+    name: 'file',
+    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+  const onChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+  
+  const onSearch = (value: string) => {
+    console.log('search:', value);
+  };
+  
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+    <div className="home">
+      <div className="input-container">
 
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
+        <Input
+          placeholder="Ask a question..."
+          value={query}
+          onChange={handleInputChange}
+          style={{ marginBottom: 20 }}
         />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
-  );
-}
+          <div className="toolbar">
+          <div style={{gap: '20px'}}>
+          {/* <Select
+    showSearch
+    placeholder="Select a person"
+    optionFilterProp="label"
+    onChange={onChange}
+    onSearch={onSearch}
+    options={[
+      {
+        value: 'jack',
+        label: 'Jack',
+      },
+      {
+        value: 'lucy',
+        label: 'Lucy',
+      },
+      {
+        value: 'tom',
+        label: 'Tom',
+      },
+    ]}
+  /><Upload {...props}>
+    <a>上传</a>
+  </Upload> */}
+  <Switch checkedChildren="联网" unCheckedChildren="离线" />
+      </div>
+      <div style={{gap: '20px'}}>
 
-export default HomePage;
+
+
+        <Button type="primary" onClick={handleAIQuery}>
+          Ask AI
+        </Button>
+        </div>
+     
+          </div>
+  
+      </div>
+
+      {/* {response && (
+        <div className="response">
+          <h3>AI Response:</h3>
+          <p>{response}</p>
+        </div>
+      )} */}
+    </div>
+  );
+};
+
+export default App;

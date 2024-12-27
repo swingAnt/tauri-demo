@@ -2,6 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "skipLibCheck": true,
+    "sourceMap": true, // 开启 Source Maps
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
