@@ -12,12 +12,12 @@ export async function createWebviewWindow(url: string,label:string) {
     }
 
     // 获取主窗口的位置和尺寸
-    const { width, height, } = await mainWindow.innerSize(); // 获取窗口尺寸
+    const { height, } = await mainWindow.innerSize(); // 获取窗口尺寸
     const mainWindowPosition = await mainWindow.outerPosition(); // 获取窗口位置
     console.log('mainWindowPosition',mainWindowPosition)
     console.log('height',height)
     const screenWidth = window.screen.availWidth; // 屏幕宽度
-    const screenHeight = window.screen.availHeight; // 屏幕高度
+    // const screenHeight = window.screen.availHeight; // 屏幕高度
     console.log('screenWidth',screenWidth)
 
     // 计算居中位置
@@ -40,15 +40,16 @@ export async function createWebviewWindow(url: string,label:string) {
     // y: mainWindowPosition.y +height+50,
     x,
     y: 170,
-
+      title:"AI检索结果",
     // x:0,
       width: 800, // 宽度与主窗口一致
       height: 600, // 高度可以根据内容自适应
     //   alwaysOnTop: true,
     //   skipTaskbar: false,
-      decorations: false, // 禁用默认窗口装饰
-      closable: true, // 允许关闭窗口
-      url: 'http://localhost:1420' + url,
+      // decorations: false, // 禁用默认窗口装饰
+      // closable: true, // 允许关闭窗口
+      url:url,
+
     });
     console.log('webview',webview)
 
@@ -81,7 +82,7 @@ export async function positionWindow() {
     const height=100;
     // 获取屏幕的可用宽度和高度（使用浏览器的 window.screen 对象）
     const screenWidth = window.screen.availWidth; // 屏幕宽度
-    const screenHeight = window.screen.availHeight; // 屏幕高度
+    // const screenHeight = window.screen.availHeight; // 屏幕高度
     console.log('screenWidth',screenWidth)
 
     // 计算居中位置
@@ -112,7 +113,7 @@ export async function calculatePosition(windowLabel: string) {
      }
  
      // 获取主窗口的位置和尺寸
-     const { width, height, } = await mainWindow.innerSize(); // 获取窗口尺寸
+     const {  height, } = await mainWindow.innerSize(); // 获取窗口尺寸
      const mainWindowPosition = await mainWindow.outerPosition(); // 获取窗口位置
      console.log('mainWindowPosition',mainWindowPosition)
      console.log('height',height)

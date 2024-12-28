@@ -7,4 +7,14 @@
   /* height: 100%; */
   /* background-color: #f0f0f0; */
   width: 100%;
+  .button-container{
+    row-gap: 10px;
+    column-gap: 10px;
+    display: flex;
+    align-items: center;
+    button{
+      height: 23px;
+      font-size: 12px;
+    }
+  }
 }

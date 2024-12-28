@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { Button, Input } from 'antd';
-import { invoke } from "@tauri-apps/api/core";
 import { createWebviewWindow } from "@/utils";
-import { Switch } from 'antd';
+import { Upload,Switch,Select } from 'antd';
 import "./index.css";
-import { UploadOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
-import {  message, Upload,Select } from 'antd';
-
+import {  message, } from 'antd';
+import {
+  UploadOutlined
+} from '@ant-design/icons';
 const App: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [response, setResponse] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -18,12 +17,9 @@ const App: React.FC = () => {
 
   const handleAIQuery = async () => {
     try {
-      const aiResponse = await invoke('ask_ai', { query });
-      setResponse(aiResponse as string);
       createWebviewWindow(`/result?query=${query}`, 'result-window');
 
     } catch (error) {
-      setResponse('Error: Unable to get a response.');
     }
   };
 
@@ -44,13 +40,7 @@ const App: React.FC = () => {
       }
     },
   };
-  const onChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-  
-  const onSearch = (value: string) => {
-    console.log('search:', value);
-  };
+
   
   return (
     <div className="home">
@@ -63,35 +53,37 @@ const App: React.FC = () => {
           style={{ marginBottom: 20 }}
         />
           <div className="toolbar">
-          <div style={{gap: '20px'}}>
-          {/* <Select
+          <div className='button-container'>
+       模型:   <Select
     showSearch
     placeholder="Select a person"
     optionFilterProp="label"
-    onChange={onChange}
-    onSearch={onSearch}
+    // onChange={onChange}
+    // onSearch={onSearch}
+    defaultValue={'codegeex-3.5'}
     options={[
       {
-        value: 'jack',
-        label: 'Jack',
+        value: 'codegeex-3.5',
+        label: 'codegeex-3.5',
       },
       {
-        value: 'lucy',
-        label: 'Lucy',
+        value: 'codegeex-4',
+        label: 'codegeex-4',
       },
       {
-        value: 'tom',
-        label: 'Tom',
+        value: 'codegeex-4pro',
+        label: 'codegeex-4pro',
       },
     ]}
-  /><Upload {...props}>
-    <a>上传</a>
-  </Upload> */}
-  <Switch checkedChildren="联网" unCheckedChildren="离线" />
+  />
+        
       </div>
-      <div style={{gap: '20px'}}>
+      <div className='button-container'>
 
-
+      <Upload {...props}>
+   <UploadOutlined />
+  </Upload>
+  <Switch checkedChildren="联网" unCheckedChildren="离线" />
 
         <Button type="primary" onClick={handleAIQuery}>
           Ask AI

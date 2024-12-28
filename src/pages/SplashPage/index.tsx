@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {positionWindow} from "@/utils"
-import reactLogo from "@/assets/1.gif";
+import webp from "@/assets/2.webp";
+
 import './index.css'; // 修改这里的导入方式
 const SplashPage: React.FC = () => {
   const navigate = useNavigate();  // 使用 useNavigate 替代 useHistory
@@ -14,7 +15,7 @@ const SplashPage: React.FC = () => {
     return () => {timer&&clearTimeout(timer)};
   }, [navigate]);
 
-  return <div className={'content'}>          <img src={reactLogo} width={150} height={100} className="logo react" alt="gif" />
+  return <div className={'content'}>          <img src={webp} width={150} height={100} className="logo react" alt="gif" />
 </div>;
 }
 
